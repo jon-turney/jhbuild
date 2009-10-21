@@ -196,6 +196,11 @@ class AutobuildBuildScript(buildscript.BuildScript, TerminalBuildScript):
         import socket
         un = os.uname()
 
+        if un[0].startswith('CYGWIN') :
+            l = list(un)
+            l[0] = 'CYGWIN'
+            un = tuple(l)
+
         info['build_host'] = socket.gethostname()
         info['architecture'] = (un[0], un[2], un[4])
 

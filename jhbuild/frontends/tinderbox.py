@@ -305,6 +305,11 @@ class TinderboxBuildScript(buildscript.BuildScript):
         import socket
         un = os.uname()
 
+        if un[0].startswith('CYGWIN') :
+            l = list(un)
+            l[0] = 'CYGWIN'
+            un = tuple(l)
+
         info.append(('Build Host', socket.gethostname()))
         info.append(('Architecture', '%s %s (%s)' % (un[0], un[2], un[4])))
 
