@@ -101,7 +101,8 @@
 <!ELEMENT testmodule (pkg-config?,branch?,dependencies?,after?,testedmodules?)>
 <!ATTLIST testmodule
 	id		CDATA	#REQUIRED
-	type		CDATA	#REQUIRED>
+	type		CDATA	#REQUIRED
+	name		CDATA	#IMPLIED>
 
 <!ELEMENT cvsroot EMPTY>
 <!ATTLIST cvsroot

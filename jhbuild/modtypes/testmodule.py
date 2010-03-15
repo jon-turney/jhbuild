@@ -34,7 +34,7 @@ from jhbuild.modtypes.autotools import AutogenModule
 import xml.dom.minidom
 
 __all__ = ['TestModule']
-__test_types__ = ['ldtp' , 'dogtail']
+__test_types__ = ['ldtp' , 'dogtail', 'script']
 
 class TestModule(Package, DownloadableModule):
     type = 'test'
@@ -43,9 +43,10 @@ class TestModule(Package, DownloadableModule):
     PHASE_FORCE_CHECKOUT = DownloadableModule.PHASE_FORCE_CHECKOUT
     PHASE_TEST           = 'test'
     
-    def __init__(self, name, branch=None, test_type=None, tested_pkgs=[]):
+    def __init__(self, name, branch=None, test_type=None,test_name='', tested_pkgs=[]):
         Package.__init__(self, name, branch=branch)
         self.test_type    = test_type
+        self.test_name    = test_name
         self.tested_pkgs  = tested_pkgs
 
         ### modify environ for tests to be working
@@ -99,7 +100,6 @@ class TestModule(Package, DownloadableModule):
             if xvfb_pid == -1:
                 raise BuildStateError('Unable to start Xvfb')
 
-        # either do_ldtp_test or do_dogtail_test
         method = getattr(self, 'do_' + self.test_type + '_test')
         try:
             method(buildscript)
@@ -307,7 +307,6 @@ class TestModule(Package, DownloadableModule):
             if file[-3:] == '.py':
                 test_cases.append(file)
 
-        status = ''
         if buildscript.config.noxvfb:
             extra_env = {}
         else:
@@ -321,9 +320,36 @@ class TestModule(Package, DownloadableModule):
                 if e.returncode != 0:
                     raise BuildStateError('%s failed' % test_case)
 
+    def do_script_test(self, buildscript):
+        src_dir = self.get_srcdir(buildscript)
+        test_cases = []
+        failed = False
+
+        if self.test_name:
+            test_cases.append(self.test_name)
+        else:
+            all_files = os.listdir(src_dir)
+            for file in all_files:
+                if file[-3:] == '.sh':
+                    test_cases.append(file)
+
+        if buildscript.config.noxvfb:
+            extra_env = {}
+        else:
+            extra_env = {'DISPLAY': ':%s' % self.screennum}
+
+        for test_case in test_cases:
+            try:
+                buildscript.execute('./%s' % test_case,
+                        cwd=src_dir, extra_env=extra_env)
+            except CommandError, e:
+                if e.returncode != 0:
+                    raise BuildStateError('%s failed' % test_case)
+
     def xml_tag_and_attrs(self):
         return 'testmodule', [('id', 'name', None),
-                              ('type', 'test_type', None)]
+                              ('type', 'test_type', None),
+                              ('name', 'test_name', None)]
 
 def get_tested_packages(node):
     tested_pkgs = []
@@ -339,9 +365,12 @@ def parse_testmodule(node, config, uri, repositories, default_repo):
     if test_type not in __test_types__:
         # FIXME: create an error here
         pass
+
     instance.test_type = test_type
 
     instance.tested_pkgs = get_tested_packages(node)
+
+    instance.test_name = node.getAttribute('name')
     
     return instance
                                    

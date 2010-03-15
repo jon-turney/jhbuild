@@ -2977,13 +2977,16 @@ Optional packages: (JHBuild will build the missing packages)
       <section id="moduleset-syntax-defs-testmodule">
         <title>testmodule</title>
 
-        <para>The <sgmltag class="element">testmodule</sgmltag> element is
-          used to create a module which runs a suite of tests using LDTP or
-          Dogtail.</para>
+	<para>The <sgmltag class="element">testmodule</sgmltag>
+	element is used to create a module which runs a suite of
+	tests, for e.g. using LDTP or Dogtail.</para>
+
 
 <programlisting>
 &lt;testmodule id="<replaceable>id</replaceable>"
-	       type="<replaceable>type</replaceable>"&gt;
+	       type="<replaceable>type</replaceable>"
+	       name="<replaceable>name</replaceable>"
+&gt;
 
   &lt;branch [ ... ] &gt;
     [...]
@@ -3005,12 +3008,18 @@ Optional packages: (JHBuild will build the missing packages)
 &lt;/testmodule&gt;
 </programlisting>
 
-        <para>The <sgmltag class="attribute">type</sgmltag> attribute gives
-          the type of tests to be run in the module. 'dogtail' uses python to
-          invoke all .py files. 'ldtp' invokes 'ldtprunner run.xml'.</para>
 
-        <para>Unless the noxvfb configuration option is set, an Xvfb server is
-          started to run the tests in</para>
+      <para>The <sgmltag class="attribute">type</sgmltag> attribute
+      gives the type of tests to be run in the module.
+      'dogtail' uses python to invoke all .py files.
+      'ldtp' invokes 'ldtprunner run.xml'.
+      'script' invokes the script named by the
+      <sgmltag class="attribute">name</sgmltag> tag, or all .sh files
+      if that is not present.</para>
+
+      <para>Unless the noxvfb configuration option is set, an Xvfb server
+      is started and tests are run with the DISPLAY environment variable
+      set appropriately.</para>
       </section>
 
       <section id="moduleset-syntax-defs-metamodule">
