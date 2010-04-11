@@ -23,6 +23,7 @@ import os
 import sys
 import urlparse
 import logging
+import locale
 
 from jhbuild.errors import UsageError, FatalError, DependencyCycleError, \
              CommandError, UndefinedRepositoryError

@@ -60,7 +60,13 @@ def parse_xml_node(node, config, uri, repositories, default_repo):
         raise FatalError(_('unknown module type %s') % node.nodeName)
 
     parser = _module_types[node.nodeName]
-    return parser(node, config, uri, repositories, default_repo)
+    module = parser(node, config, uri, repositories, default_repo)
+
+    if node.hasAttribute('tags'):
+        for t in node.getAttribute('tags').split(','):
+            module.tags.append(t)
+
+    return module
 
 def get_dependencies(node):
     """Scan for dependencies in <dependencies>, <suggests> and <after> elements."""
