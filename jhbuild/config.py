@@ -400,7 +400,8 @@ class Config:
 
         # PATH
         bindir = os.path.join(self.prefix, 'bin')
-        addpath('PATH', bindir)
+        # no good for cross-compiling
+        #addpath('PATH', bindir)
 
         # MANPATH
         manpathdir = os.path.join(self.prefix, 'share', 'man')
