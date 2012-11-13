@@ -194,15 +194,18 @@ class AutobuildBuildScript(buildscript.BuildScript, TerminalBuildScript):
 
         info = {}
         import socket
-        un = os.uname()
 
-        if un[0].startswith('CYGWIN') :
-            l = list(un)
-            l[0] = 'CYGWIN'
-            un = tuple(l)
+        if self.config.cross_target:
+            info['architecture'] = self.config.cross_target
+        else:
+            un = os.uname()
+            if un[0].startswith('CYGWIN') :
+                l = list(un)
+                l[0] = 'CYGWIN'
+                un = tuple(l)
+            info['architecture'] = (un[0], un[2], un[4])
 
         info['build_host'] = socket.gethostname()
-        info['architecture'] = (un[0], un[2], un[4])
 
         distro = get_distro()
         if distro:

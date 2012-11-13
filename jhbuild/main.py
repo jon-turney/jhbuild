@@ -124,6 +124,10 @@ def main(args):
     parser.add_option('--no-interact', action='store_true',
                       dest='nointeract', default=False,
                       help=_('do not prompt for input'))
+    parser.add_option('--cross-target', action='store', metavar='TEXT',
+                      type='string', dest='cross_target',
+                      default=None,
+                      help=_('cross compiling target name'))
 
     options, args = parser.parse_args(args)
 
@@ -135,6 +139,7 @@ def main(args):
 
     if options.moduleset: config.moduleset = options.moduleset
     if options.nointeract: config.interact = False
+    if options.cross_target: config.cross_target = options.cross_target
 
     if not args or args[0][0] == '-':
         command = 'build' # default to cvs update + compile
