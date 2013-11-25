@@ -4,7 +4,6 @@ app_PYTHON = \
 	__init__.py \
 	autobuild.py \
 	base.py \
-	bootstrap.py \
 	bot.py \
 	checkbranches.py \
 	checkmodulesets.py \

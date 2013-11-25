@@ -32,7 +32,7 @@ _jhbuild()
 	prev=${COMP_WORDS[COMP_CWORD-1]}
 
 	case "$prev" in
-	gui|tinderbox|shell|sanitycheck|bootstrap)
+	gui|tinderbox|shell|sanitycheck)
 		command_list=""
 		;;
 	update|updateone|build|buildone|list|dot|info|-t|-s|-a|-n|-c)
@@ -55,7 +55,7 @@ _jhbuild()
 		_filedir -d
 		;;
 	*)
-		command_list="gui update updateone build buildone tinderbox run shell sanitycheck bootstrap list dot info"
+		command_list="gui update updateone build buildone tinderbox run shell sanitycheck list dot info"
 
 		v=false
 		if [ $COMP_CWORD -gt 2 ]; then

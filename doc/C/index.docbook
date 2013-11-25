@@ -727,30 +727,6 @@ jhbuildbot_password = 'password'
       </variablelist>
     </section>
 
-    <section id="command-reference-bootstrap">
-      <title>bootstrap</title>
-
-      <para>The <command>bootstrap</command> command installs a set of build
-        utilities. The build utilities include
-        <application>autoconf</application>, <application>automake</application>
-        and similar utilities. The recommended method to install the build
-        utilities is via your distribution's package management system. The
-        <command>bootstrap</command> should only be used if the build utilities
-        are not provided by your distribution's package management system, for
-        example on <systemitem class="osname">Mac OS</systemitem>.</para>
-
-      <cmdsynopsis><command>jhbuild bootstrap</command>
-      </cmdsynopsis>
-
-      <para>The <command>bootstrap</command> command builds modules using the
-        same method as the <command>build</command> command, but uses the
-        <filename>bootstrap.modules</filename> moduleset.</para>
-
-      <para>See the
-        <link linkend="command-reference-build"><command>build</command></link>
-        command documentation for available options.</para>
-    </section>
-
     <section id="command-reference-build">
       <title>build</title>
 
